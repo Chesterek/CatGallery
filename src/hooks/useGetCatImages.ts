@@ -1,8 +1,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchCatImages } from '../api/catApi';
 import type { CatImage } from '../types/cat';
+import { PAGE_SIZE, REQUEST_STATE_TIME } from "../api/config.ts";
 
-const PAGE_SIZE = 30;
 const CAT_IMAGES_QUERY_KEY = ['catImages'] as const;
 
 export const useGetCatImages = () => {
@@ -12,6 +12,6 @@ export const useGetCatImages = () => {
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length === PAGE_SIZE ? allPages.length : undefined,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: REQUEST_STATE_TIME
   });
 };

@@ -1,7 +1,11 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { useGetCatImageById } from '../../hooks/useGetCatImageById.ts';
-import './CatDetailModal.scss';
 import { useEffect, useRef } from 'react';
+import { LoadingState } from "./LoadingState.tsx";
+import { ErrorState } from "./ErrorState.tsx";
+import { NoBreedInfo } from "./NoBreedInfo.tsx";
+import { NavArrow } from './NavArrow.tsx';
+import './CatDetailModal.scss';
 
 interface CatDetailModalProps {
   catId: string | null;
@@ -14,55 +18,12 @@ interface CatDetailModalProps {
 
 const SWIPE_THRESHOLD = 50; // px
 
-const LoadingState = () => (
-  <p className="cat-modal__status">Loading details…</p>
-);
-
-const ErrorState = ({ message }: { message: string }) => (
-  <p className="cat-modal__status cat-modal__status--error">
-    Failed to load details: {message}
-  </p>
-);
-
-const NoBreedInfo = () => (
-  <p className="cat-modal__status">No breed information available for this cat.</p>
-);
-
-// ─── Arrow button ─────────────────────────────────────────────────────────────
-
-interface NavArrowProps {
-  direction: 'prev' | 'next';
-  onClick: () => void;
-  disabled: boolean;
-}
-
-const NavArrow = ({ direction, onClick, disabled }: NavArrowProps) => (
-  <button
-    className={`cat-modal__nav cat-modal__nav--${direction}`}
-    onClick={onClick}
-    disabled={disabled}
-    aria-label={direction === 'prev' ? 'Previous image' : 'Next image'}
-  >
-    {direction === 'prev' ? (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="15 18 9 12 15 6" />
-      </svg>
-    ) : (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="9 18 15 12 9 6" />
-      </svg>
-    )}
-  </button>
-);
-
-// ─── Component ───────────────────────────────────────────────────────────────
 
 const CatDetailModal = ({ catId, onClose, onPrev, onNext, hasPrev, hasNext }: CatDetailModalProps) => {
   const { data, isLoading, isError, error } = useGetCatImageById(catId);
 
   const breed = data?.breeds?.[0] ?? null;
 
-  // ── Keyboard navigation ──────────────────────────────────────────────────
   useEffect(() => {
     if (!catId) return;
 
@@ -75,7 +36,6 @@ const CatDetailModal = ({ catId, onClose, onPrev, onNext, hasPrev, hasNext }: Ca
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [catId, hasPrev, hasNext, onPrev, onNext]);
 
-  // ── Touch / swipe ────────────────────────────────────────────────────────
   const touchStartX = useRef<number | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -100,13 +60,10 @@ const CatDetailModal = ({ catId, onClose, onPrev, onNext, hasPrev, hasNext }: Ca
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-
-          {/* Close button */}
           <Dialog.Close className="cat-modal__close" aria-label="Close">
             ✕
           </Dialog.Close>
 
-          {/* Cat image + nav arrows */}
           <div className="cat-modal__image-section">
             <NavArrow direction="prev" onClick={onPrev} disabled={!hasPrev} />
 
@@ -123,7 +80,6 @@ const CatDetailModal = ({ catId, onClose, onPrev, onNext, hasPrev, hasNext }: Ca
             <NavArrow direction="next" onClick={onNext} disabled={!hasNext} />
           </div>
 
-          {/* Body */}
           <div className="cat-modal__body">
             {isLoading && <LoadingState />}
             {isError && <ErrorState message={error.message} />}

@@ -1,7 +1,7 @@
 import type { CatImage, CatImageDetail } from '../types/cat';
-import { catApiClient } from "./config.ts";
+import { PAGE_SIZE, catApiClient } from "./config.ts";
 
-export const fetchCatImages = async (limit = 30, page = 0): Promise<CatImage[]> => {
+export const fetchCatImages = async (limit = PAGE_SIZE, page = 0): Promise<CatImage[]> => {
   const response = await catApiClient.get<CatImage[]>('/images/search', {
     params: {
       limit,

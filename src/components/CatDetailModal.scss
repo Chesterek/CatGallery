@@ -40,6 +40,10 @@
   width: min(92vw, $modal-max-width);
   max-height: $modal-max-height;
   animation: contentSlideIn 180ms ease;
+
+  @include desktop {
+    width: min(92vw, $modal-max-width-desktop);
+  }
 }
 
 // ── Close button ──────────────────────────────────────────────────────────────

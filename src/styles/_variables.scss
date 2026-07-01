@@ -28,7 +28,8 @@ $bp-desktop: 900px;
 
 // ── Layout ────────────────────────────────────────────────────────────────────
 $gallery-max-width: 1200px;
-$modal-max-width:   520px;
+$modal-max-width:         520px;
+$modal-max-width-desktop: 680px; // ~30% larger on desktop
 $modal-max-height:  90vh;
 $modal-border-radius: 12px;
 

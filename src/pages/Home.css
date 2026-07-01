@@ -1,0 +1,36 @@
+.home {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.home__title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.home-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.home-status--error {
+  color: #c0392b;
+}
+
+.gallery-container {
+  width: 100%;
+}
+
+@media (max-width: 599px) {
+  .home__title {
+    font-size: 1.5rem;
+  }
+}
+

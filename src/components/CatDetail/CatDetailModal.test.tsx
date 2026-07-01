@@ -2,10 +2,10 @@ import { describe, it, expect, vi } from 'vitest';
 import { screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
-import { server } from '../test/mocks/server';
-import { CAT_API_BASE, mockImageDetail } from '../test/mocks/handlers';
-import { renderWithProviders } from '../test/utils/renderWithProviders';
-import CatDetailModal from './CatDetailModal';
+import { server } from '../../test/mocks/server.ts';
+import { CAT_API_BASE, mockImageDetail } from '../../test/mocks/handlers.ts';
+import { renderWithProviders } from '../../test/utils/renderWithProviders.tsx';
+import CatDetailModal from './CatDetailModal.tsx';
 
 // ── Touch helpers ─────────────────────────────────────────────────────────────
 // jsdom requires real Touch objects; plain objects cause react-remove-scroll to crash.

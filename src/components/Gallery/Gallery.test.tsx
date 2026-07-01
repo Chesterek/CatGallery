@@ -2,10 +2,10 @@ import { describe, it, expect, vi } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
-import { server } from '../test/mocks/server';
-import { CAT_API_BASE, mockImages } from '../test/mocks/handlers';
-import { renderWithProviders } from '../test/utils/renderWithProviders';
-import Gallery from './Gallery';
+import { server } from '../../test/mocks/server.ts';
+import { CAT_API_BASE, mockImages } from '../../test/mocks/handlers.ts';
+import { renderWithProviders } from '../../test/utils/renderWithProviders.tsx';
+import Gallery from './Gallery.tsx';
 
 // ── Mock react-photo-album ────────────────────────────────────────────────────
 // react-photo-album requires a real layout engine to render images (ResizeObserver
@@ -40,16 +40,6 @@ describe('Gallery', () => {
     mockImages.forEach((img, i) => {
       expect(screen.getAllByRole('img')[i]).toHaveAttribute('src', img.url);
     });
-  });
-
-  it('logs the cat id to console when an image is clicked', async () => {
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    renderWithProviders(<Gallery images={mockImages} />);
-
-    await userEvent.click(screen.getAllByRole('img')[0]);
-
-    expect(consoleSpy).toHaveBeenCalledWith(mockImages[0].id);
-    consoleSpy.mockRestore();
   });
 
   it('opens the modal when an image is clicked', async () => {

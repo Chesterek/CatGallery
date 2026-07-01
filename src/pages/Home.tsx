@@ -1,7 +1,11 @@
 import { useMemo } from 'react';
 import { useGetCatImages } from '../hooks/useGetCatImages';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
-import Gallery from '../components/Gallery';
+import Gallery from '../components/Gallery/Gallery.tsx';
+import { Loading } from "../components/Gallery/Loading.tsx";
+import { ErrorPage } from "../components/Gallery/Error.tsx";
+import {LoadingMoreCats} from "../components/Gallery/LoadingMoreCats.tsx";
+import {AllCatsSeen} from "../components/Gallery/AllCatsSeen.tsx";
 import './Home.scss';
 
 const Home = () => {
@@ -23,35 +27,21 @@ const Home = () => {
   );
 
   if (isLoading) {
-    return (
-      <div className="home-status">
-        <p>Loading cat images…</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (isError) {
-    return (
-      <div className="home-status home-status--error">
-        <p>Failed to load images: {error.message}</p>
-      </div>
-    );
+    return <ErrorPage error={error} />;
   }
 
   return (
     <main className="home">
       <h1 className="home__title">🐱 Cat Gallery</h1>
-      {images.length > 0 ? (
-        <Gallery images={images} />
-      ) : (
-        <p className="home-status">No images found.</p>
-      )}
-      {isFetchingNextPage && (
-        <p className="home__loading-more">Loading more cats…</p>
-      )}
-      {!hasNextPage && images.length > 0 && (
-        <p className="home__end-message">You've seen all the cats! 🐾</p>
-      )}
+      <Gallery images={images} />
+
+      {isFetchingNextPage && <LoadingMoreCats />}
+
+      {!hasNextPage && images.length > 0 && (<AllCatsSeen />)}
     </main>
   );
 };

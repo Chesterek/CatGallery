@@ -1,9 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { useGetCatImageById } from '../hooks/useGetCatImageById';
+import { useGetCatImageById } from '../../hooks/useGetCatImageById.ts';
 import './CatDetailModal.scss';
 import { useEffect, useRef } from 'react';
-
-// ─── Component Props ──────────────────────────────────────────────────────────
 
 interface CatDetailModalProps {
   catId: string | null;
@@ -14,11 +12,7 @@ interface CatDetailModalProps {
   hasNext: boolean;
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const SWIPE_THRESHOLD = 50; // px
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
 
 const LoadingState = () => (
   <p className="cat-modal__status">Loading details…</p>

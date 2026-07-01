@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchCatImageById } from '../api/catApi';
 import type { CatImageDetail } from '../types/cat';
+import { REQUEST_STATE_TIME } from "../api/config.ts";
 
 const CAT_IMAGE_BY_ID_QUERY_KEY = 'catImageById';
 
@@ -15,7 +16,7 @@ export const useGetCatImageById = (id: string | null) => {
       return item;
     },
     enabled: !!id,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: REQUEST_STATE_TIME
   });
 };
 

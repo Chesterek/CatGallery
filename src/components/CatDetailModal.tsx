@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { useGetCatImageById } from '../hooks/useGetCatImageById';
-import './CatDetailModal.css';
+import './CatDetailModal.scss';
 
 // ─── Component Props ──────────────────────────────────────────────────────────
 

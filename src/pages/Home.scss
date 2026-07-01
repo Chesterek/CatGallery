@@ -1,0 +1,35 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.home {
+  max-width: $gallery-max-width;
+  margin: 0 auto;
+  padding: $spacing-lg $spacing-md;
+
+  &__title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: $spacing-lg;
+    color: $color-text-heading;
+
+    @include tablet-down {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.home-status {
+  @include flex-center;
+  min-height: 40vh;
+  font-size: 1.2rem;
+  color: $color-text-muted;
+
+  &--error {
+    color: $color-error;
+  }
+}
+
+.gallery-container {
+  width: 100%;
+}
+

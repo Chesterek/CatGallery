@@ -1,0 +1,158 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+// ── Animations ────────────────────────────────────────────────────────────────
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes contentSlideIn {
+  from { opacity: 0; transform: translate(-50%, -48%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+// ── Overlay ───────────────────────────────────────────────────────────────────
+
+.cat-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: $z-modal-overlay;
+  animation: overlayFadeIn 150ms ease;
+}
+
+// ── Content panel ─────────────────────────────────────────────────────────────
+
+.cat-modal__content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: $z-modal-content;
+  background: $color-bg-white;
+  border-radius: $modal-border-radius;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  overflow-y: auto;
+  width: min(92vw, $modal-max-width);
+  max-height: $modal-max-height;
+  animation: contentSlideIn 180ms ease;
+}
+
+// ── Close button ──────────────────────────────────────────────────────────────
+
+.cat-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: $z-modal-close;
+  background: rgba(0, 0, 0, 0.45);
+  color: $color-bg-white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 150ms;
+
+  @include flex-center;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+// ── Image ─────────────────────────────────────────────────────────────────────
+
+.cat-modal__image-wrapper {
+  width: 100%;
+  background: $color-bg-image;
+}
+
+.cat-modal__image {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+  display: block;
+
+  @include mobile {
+    max-height: 50vh;
+  }
+}
+
+// ── Body ──────────────────────────────────────────────────────────────────────
+
+.cat-modal__body {
+  padding: $spacing-lg;
+
+  @include mobile {
+    padding: $spacing-md;
+  }
+}
+
+// ── Title ─────────────────────────────────────────────────────────────────────
+
+.cat-modal__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.1rem;
+  color: $color-text-primary;
+}
+
+// ── Details list ──────────────────────────────────────────────────────────────
+
+.cat-modal__details {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.cat-modal__detail-row {
+  display: flex;
+  gap: $spacing-xs;
+  flex-wrap: wrap;
+
+  dt {
+    font-weight: 600;
+    color: $color-text-secondary;
+    min-width: 130px;
+
+    @include mobile {
+      min-width: 110px;
+    }
+  }
+
+  dd {
+    color: $color-text-primary;
+  }
+}
+
+// ── Wikipedia link ────────────────────────────────────────────────────────────
+
+.cat-modal__link {
+  color: $color-link;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ── Status messages ───────────────────────────────────────────────────────────
+
+.cat-modal__status {
+  text-align: center;
+  padding: $spacing-md 0;
+  color: $color-text-muted;
+  font-size: 0.95rem;
+
+  &--error {
+    color: $color-error;
+  }
+}
+

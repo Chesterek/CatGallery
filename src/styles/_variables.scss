@@ -1,0 +1,34 @@
+// ── Colours ──────────────────────────────────────────────────────────────────
+$color-text-primary:   #1a1a1a;
+$color-text-secondary: #555;
+$color-text-muted:     #666;
+$color-text-heading:   #333;
+$color-error:          #c0392b;
+$color-link:           #2563eb;
+$color-bg-body:        #f5f5f5;
+$color-bg-white:       #fff;
+$color-bg-image:       #f0f0f0;
+
+// ── Z-index ───────────────────────────────────────────────────────────────────
+$z-modal-overlay: 100;
+$z-modal-content: 101;
+$z-modal-close:    10;
+
+// ── Spacing ───────────────────────────────────────────────────────────────────
+$spacing-xs:  0.5rem;
+$spacing-sm:  0.65rem;
+$spacing-md:  1rem;
+$spacing-lg:  1.5rem;
+$spacing-xl:  2rem;
+
+// ── Breakpoints ───────────────────────────────────────────────────────────────
+$bp-mobile:  480px;
+$bp-tablet:  599px;
+$bp-desktop: 900px;
+
+// ── Layout ────────────────────────────────────────────────────────────────────
+$gallery-max-width: 1200px;
+$modal-max-width:   520px;
+$modal-max-height:  90vh;
+$modal-border-radius: 12px;
+

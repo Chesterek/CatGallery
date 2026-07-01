@@ -1,6 +1,6 @@
 import { useGetCatImages } from '../hooks/useGetCatImages';
 import Gallery from '../components/Gallery';
-import './Home.css';
+import './Home.scss';
 
 const Home = () => {
   const { data: images, isLoading, isError, error } = useGetCatImages(30);

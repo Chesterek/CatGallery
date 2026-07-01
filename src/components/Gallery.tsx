@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { ColumnsPhotoAlbum } from 'react-photo-album';
 import type { Photo, ClickHandlerProps } from 'react-photo-album';
 import 'react-photo-album/columns.css';
 import type { CatImage } from '../types/cat';
+import CatDetailModal from './CatDetailModal';
 
 // ─── Extended Photo Type ──────────────────────────────────────────────────────
 
@@ -36,24 +38,34 @@ const mapToPhotoAlbumPhotos = (images: CatImage[]): CatPhoto[] =>
     alt: `Cat ${img.id}`,
   }));
 
-const handlePhotoClick = ({ photo }: ClickHandlerProps<CatPhoto>): void => {
-  console.log(photo.catId);
-};
-
 // ─── Component ───────────────────────────────────────────────────────────────
 
 const Gallery = ({ images }: GalleryProps) => {
+  const [selectedCatId, setSelectedCatId] = useState<string | null>(null);
+
   const photos = mapToPhotoAlbumPhotos(images);
 
+  const handlePhotoClick = ({ photo }: ClickHandlerProps<CatPhoto>): void => {
+    console.log(photo.catId);
+    setSelectedCatId(photo.catId);
+  };
+
   return (
-    <div className="gallery-container">
-      <ColumnsPhotoAlbum<CatPhoto>
-        photos={photos}
-        spacing={GALLERY_SPACING}
-        columns={GALLERY_COLUMNS}
-        onClick={handlePhotoClick}
+    <>
+      <div className="gallery-container">
+        <ColumnsPhotoAlbum<CatPhoto>
+          photos={photos}
+          spacing={GALLERY_SPACING}
+          columns={GALLERY_COLUMNS}
+          onClick={handlePhotoClick}
+        />
+      </div>
+
+      <CatDetailModal
+        catId={selectedCatId}
+        onClose={() => setSelectedCatId(null)}
       />
-    </div>
+    </>
   );
 };
 

@@ -1,0 +1,147 @@
+/* ── Overlay ─────────────────────────────────────────────────────────────── */
+.cat-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 100;
+  animation: overlayFadeIn 150ms ease;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Content panel ───────────────────────────────────────────────────────── */
+.cat-modal__content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  overflow-y: auto;
+  width: min(92vw, 520px);
+  max-height: 90vh;
+  animation: contentSlideIn 180ms ease;
+}
+
+@keyframes contentSlideIn {
+  from { opacity: 0; transform: translate(-50%, -48%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* ── Close button ────────────────────────────────────────────────────────── */
+.cat-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 150ms;
+}
+
+.cat-modal__close:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* ── Image ───────────────────────────────────────────────────────────────── */
+.cat-modal__image-wrapper {
+  width: 100%;
+  background: #f0f0f0;
+}
+
+.cat-modal__image {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+.cat-modal__body {
+  padding: 1.5rem;
+}
+
+.cat-modal__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.1rem;
+  color: #1a1a1a;
+}
+
+/* ── Details list ────────────────────────────────────────────────────────── */
+.cat-modal__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.cat-modal__detail-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cat-modal__detail-row dt {
+  font-weight: 600;
+  color: #555;
+  min-width: 130px;
+}
+
+.cat-modal__detail-row dd {
+  color: #1a1a1a;
+}
+
+/* ── Wikipedia link ─────────────────────────────────────────────────────── */
+.cat-modal__link {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.cat-modal__link:hover {
+  text-decoration: underline;
+}
+
+/* ── Status messages ─────────────────────────────────────────────────────── */
+.cat-modal__status {
+  text-align: center;
+  padding: 1rem 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.cat-modal__status--error {
+  color: #c0392b;
+}
+
+/* ── Mobile tweaks ───────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .cat-modal__image {
+    max-height: 50vh;
+  }
+
+  .cat-modal__body {
+    padding: 1rem;
+  }
+
+  .cat-modal__detail-row dt {
+    min-width: 110px;
+  }
+}
+

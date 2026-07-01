@@ -41,14 +41,17 @@ const mapToPhotoAlbumPhotos = (images: CatImage[]): CatPhoto[] =>
 // ─── Component ───────────────────────────────────────────────────────────────
 
 const Gallery = ({ images }: GalleryProps) => {
-  const [selectedCatId, setSelectedCatId] = useState<string | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const photos = mapToPhotoAlbumPhotos(images);
 
   const handlePhotoClick = ({ photo }: ClickHandlerProps<CatPhoto>): void => {
+    const index = images.findIndex((img) => img.id === photo.catId);
     console.log(photo.catId);
-    setSelectedCatId(photo.catId);
+    setSelectedIndex(index);
   };
+
+  const selectedCatId = selectedIndex !== null ? images[selectedIndex]?.id ?? null : null;
 
   return (
     <>
@@ -63,7 +66,11 @@ const Gallery = ({ images }: GalleryProps) => {
 
       <CatDetailModal
         catId={selectedCatId}
-        onClose={() => setSelectedCatId(null)}
+        onClose={() => setSelectedIndex(null)}
+        hasPrev={selectedIndex !== null && selectedIndex > 0}
+        hasNext={selectedIndex !== null && selectedIndex < images.length - 1}
+        onPrev={() => setSelectedIndex((i) => (i !== null ? i - 1 : i))}
+        onNext={() => setSelectedIndex((i) => (i !== null ? i + 1 : i))}
       />
     </>
   );

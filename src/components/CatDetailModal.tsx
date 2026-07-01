@@ -1,13 +1,22 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { useGetCatImageById } from '../hooks/useGetCatImageById';
 import './CatDetailModal.scss';
+import { useEffect, useRef } from 'react';
 
 // ─── Component Props ──────────────────────────────────────────────────────────
 
 interface CatDetailModalProps {
   catId: string | null;
   onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+  hasPrev: boolean;
+  hasNext: boolean;
 }
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const SWIPE_THRESHOLD = 50; // px
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -25,34 +34,100 @@ const NoBreedInfo = () => (
   <p className="cat-modal__status">No breed information available for this cat.</p>
 );
 
+// ─── Arrow button ─────────────────────────────────────────────────────────────
+
+interface NavArrowProps {
+  direction: 'prev' | 'next';
+  onClick: () => void;
+  disabled: boolean;
+}
+
+const NavArrow = ({ direction, onClick, disabled }: NavArrowProps) => (
+  <button
+    className={`cat-modal__nav cat-modal__nav--${direction}`}
+    onClick={onClick}
+    disabled={disabled}
+    aria-label={direction === 'prev' ? 'Previous image' : 'Next image'}
+  >
+    {direction === 'prev' ? (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    ) : (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    )}
+  </button>
+);
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
-const CatDetailModal = ({ catId, onClose }: CatDetailModalProps) => {
+const CatDetailModal = ({ catId, onClose, onPrev, onNext, hasPrev, hasNext }: CatDetailModalProps) => {
   const { data, isLoading, isError, error } = useGetCatImageById(catId);
 
   const breed = data?.breeds?.[0] ?? null;
+
+  // ── Keyboard navigation ──────────────────────────────────────────────────
+  useEffect(() => {
+    if (!catId) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' && hasPrev) onPrev();
+      if (e.key === 'ArrowRight' && hasNext) onNext();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [catId, hasPrev, hasNext, onPrev, onNext]);
+
+  // ── Touch / swipe ────────────────────────────────────────────────────────
+  const touchStartX = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    touchStartX.current = null;
+
+    if (delta > SWIPE_THRESHOLD && hasNext) onNext();
+    if (delta < -SWIPE_THRESHOLD && hasPrev) onPrev();
+  };
 
   return (
     <Dialog.Root open={!!catId} onOpenChange={(open) => !open && onClose()}>
       <Dialog.Portal>
         <Dialog.Overlay className="cat-modal__overlay" />
-        <Dialog.Content className="cat-modal__content">
+        <Dialog.Content
+          className="cat-modal__content"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
 
           {/* Close button */}
           <Dialog.Close className="cat-modal__close" aria-label="Close">
             ✕
           </Dialog.Close>
 
-          {/* Cat image */}
-          {data?.url && (
-            <div className="cat-modal__image-wrapper">
-              <img
-                src={data.url}
-                alt={breed?.name ?? 'Cat'}
-                className="cat-modal__image"
-              />
-            </div>
-          )}
+          {/* Cat image + nav arrows */}
+          <div className="cat-modal__image-section">
+            <NavArrow direction="prev" onClick={onPrev} disabled={!hasPrev} />
+
+            {data?.url && (
+              <div className="cat-modal__image-wrapper">
+                <img
+                  src={data.url}
+                  alt={breed?.name ?? 'Cat'}
+                  className="cat-modal__image"
+                />
+              </div>
+            )}
+
+            <NavArrow direction="next" onClick={onNext} disabled={!hasNext} />
+          </div>
 
           {/* Body */}
           <div className="cat-modal__body">
@@ -107,4 +182,3 @@ const CatDetailModal = ({ catId, onClose }: CatDetailModalProps) => {
 };
 
 export default CatDetailModal;
-

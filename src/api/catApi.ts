@@ -1,10 +1,11 @@
 import type { CatImage, CatImageDetail } from '../types/cat';
 import { catApiClient } from "./config.ts";
 
-export const fetchCatImages = async (limit = 30): Promise<CatImage[]> => {
+export const fetchCatImages = async (limit = 30, page = 0): Promise<CatImage[]> => {
   const response = await catApiClient.get<CatImage[]>('/images/search', {
     params: {
       limit,
+      page,
       mime_types: 'jpg,png',
       has_breeds: true,
     },

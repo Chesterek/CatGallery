@@ -33,3 +33,11 @@
   width: 100%;
 }
 
+.home__loading-more,
+.home__end-message {
+  text-align: center;
+  padding: $spacing-lg 0;
+  color: $color-text-muted;
+  font-size: 0.95rem;
+}
+
